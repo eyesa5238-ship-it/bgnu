@@ -37,6 +37,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', function () { return redirect()->route('faculty.index'); })->name('admin');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/biography', [ProfileController::class, 'biographyEdit'])->name('biography.edit');
+    Route::put('/biography', [ProfileController::class, 'biographyUpdate'])->name('biography.update');
+    Route::get('/teaching-courses', [ProfileController::class, 'teachingCoursesEdit'])->name('teaching-courses.edit');
+    Route::put('/teaching-courses', [ProfileController::class, 'teachingCoursesUpdate'])->name('teaching-courses.update');
+    Route::get('/academic-positions', [ProfileController::class, 'academicPositionsEdit'])->name('academic-positions.edit');
+    Route::put('/academic-positions', [ProfileController::class, 'academicPositionsUpdate'])->name('academic-positions.update');
     Route::get('/faculty', [Controller::class, 'index'])->name('faculty.index');
     Route::get('/faculty/education', [Controller::class, 'faculty_index'])->name('education.index');
     Route::post('/education/store', [Controller::class, 'faculty_store'])->name('education.store');

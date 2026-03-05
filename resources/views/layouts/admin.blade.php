@@ -137,6 +137,18 @@
                     <i class="fa-solid fa-user-cog"></i>
                     Profile
                 </a>
+                <a href="{{ route('biography.edit') }}" class="admin-nav-item {{ request()->routeIs('biography.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Biography
+                </a>
+                <a href="{{ route('teaching-courses.edit') }}" class="admin-nav-item {{ request()->routeIs('teaching-courses.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-book-open"></i>
+                    Teaching Courses
+                </a>
+                <a href="{{ route('academic-positions.edit') }}" class="admin-nav-item {{ request()->routeIs('academic-positions.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-briefcase"></i>
+                    Academic Positions
+                </a>
                 <div class="admin-nav-divider"></div>
                 <a href="{{ url('/') }}" class="admin-nav-item" target="_blank">
                     <i class="fa-solid fa-external-link-alt"></i>

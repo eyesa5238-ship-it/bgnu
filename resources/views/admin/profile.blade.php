@@ -57,83 +57,7 @@
                             <textarea name="bio" class="form-control" rows="2" placeholder="Short bio...">{{ old('bio', $user->bio) }}</textarea>
                             @error('bio')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Biography</label>
-                            <textarea name="biography" class="form-control" rows="5" placeholder="Full biography...">{{ old('biography', $user->biography) }}</textarea>
-                            @error('biography')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
-                        </div>
                     </div>
-                </div>
-
-                <hr class="my-4">
-
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Teaching Courses</label>
-                    <p class="text-muted small mb-2">Add courses; they will be shown as a list.</p>
-                    <ul id="teachingCoursesList" class="list-group mb-2">
-                        @php
-                            $coursesForDisplay = old('teaching_courses', $teachingCourses ?? $user->teaching_courses ?? []);
-                            $coursesForDisplay = is_array($coursesForDisplay) ? $coursesForDisplay : [];
-                        @endphp
-                        @foreach($coursesForDisplay as $course)
-                            @if(trim((string) $course) !== '')
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>{{ $course }}</span>
-                                <input type="hidden" name="teaching_courses[]" value="{{ e($course) }}">
-                                <button type="button" class="btn btn-sm btn-outline-danger remove-course">Remove</button>
-                            </li>
-                            @endif
-                        @endforeach
-                    </ul>
-                    <div class="input-group">
-                        <input type="text" id="newCourse" class="form-control" placeholder="Course name">
-                        <button type="button" class="btn btn-outline-primary" id="addCourse">Add course</button>
-                    </div>
-                    <input type="hidden" name="teaching_courses_json" id="teaching_courses_json" value="">
-                </div>
-
-                <hr class="my-4">
-
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Academic Positions</label>
-                    <p class="text-muted small mb-2">Description of position, institute, from and to dates.</p>
-                    <div id="positionsContainer">
-                        @php
-                            $positions = old('positions', $user->academicPositions->map(fn($p) => [
-                                'description' => $p->description,
-                                'institute' => $p->institute,
-                                'from_date' => $p->from_date?->format('Y-m-d'),
-                                'to_date' => $p->to_date?->format('Y-m-d'),
-                            ])->toArray());
-                            if (empty($positions)) $positions = [['description' => '', 'institute' => '', 'from_date' => '', 'to_date' => '']];
-                        @endphp
-                        @foreach($positions as $i => $pos)
-                        <div class="position-row border rounded p-3 mb-3 bg-light">
-                            <div class="row g-2">
-                                <div class="col-12">
-                                    <label class="form-label small mb-0">Description of position</label>
-                                    <input type="text" name="positions[{{ $i }}][description]" class="form-control form-control-sm" value="{{ $pos['description'] ?? '' }}" placeholder="e.g. Associate Professor">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small mb-0">Institute</label>
-                                    <input type="text" name="positions[{{ $i }}][institute]" class="form-control form-control-sm" value="{{ $pos['institute'] ?? '' }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small mb-0">From</label>
-                                    <input type="date" name="positions[{{ $i }}][from_date]" class="form-control form-control-sm" value="{{ $pos['from_date'] ?? '' }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small mb-0">To</label>
-                                    <input type="date" name="positions[{{ $i }}][to_date]" class="form-control form-control-sm" value="{{ $pos['to_date'] ?? '' }}">
-                                </div>
-                                <div class="col-12">
-                                    <button type="button" class="btn btn-sm btn-outline-danger remove-position">Remove position</button>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="addPosition">+ Add position</button>
                 </div>
 
                 <hr class="my-4">
@@ -153,52 +77,6 @@ document.getElementById('profile_image').addEventListener('change', function(e) 
         var r = new FileReader();
         r.onload = function() { wrap.innerHTML = '<img src="' + r.result + '" alt="Preview" class="w-100 h-100" style="object-fit: cover;">'; };
         r.readAsDataURL(e.target.files[0]);
-    }
-});
-
-// Teaching courses: add
-var courseIndex = 0;
-document.getElementById('addCourse').addEventListener('click', function() {
-    var input = document.getElementById('newCourse');
-    var name = (input.value || '').trim();
-    if (!name) return;
-    var li = document.createElement('li');
-    li.className = 'list-group-item d-flex justify-content-between align-items-center';
-    li.innerHTML = '<span>' + escapeHtml(name) + '</span><input type="hidden" name="teaching_courses[]" value="' + escapeHtml(name) + '"><button type="button" class="btn btn-sm btn-outline-danger remove-course">Remove</button>';
-    document.getElementById('teachingCoursesList').appendChild(li);
-    input.value = '';
-});
-document.getElementById('teachingCoursesList').addEventListener('click', function(e) {
-    if (e.target.classList.contains('remove-course')) e.target.closest('li').remove();
-});
-function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-// Before submit: sync all course names to a hidden JSON field as backup
-document.getElementById('profileForm').addEventListener('submit', function() {
-    var names = [];
-    document.querySelectorAll('#teachingCoursesList input[name="teaching_courses[]"]').forEach(function(inp) {
-        var v = (inp.value || '').trim();
-        if (v) names.push(v);
-    });
-    document.getElementById('teaching_courses_json').value = JSON.stringify(names);
-});
-
-// Academic positions: add row
-var positionIndex = {{ count($positions) }};
-document.getElementById('addPosition').addEventListener('click', function() {
-    var html = '<div class="position-row border rounded p-3 mb-3 bg-light">' +
-        '<div class="row g-2">' +
-        '<div class="col-12"><label class="form-label small mb-0">Description of position</label><input type="text" name="positions[' + positionIndex + '][description]" class="form-control form-control-sm" placeholder="e.g. Associate Professor"></div>' +
-        '<div class="col-md-6"><label class="form-label small mb-0">Institute</label><input type="text" name="positions[' + positionIndex + '][institute]" class="form-control form-control-sm"></div>' +
-        '<div class="col-md-3"><label class="form-label small mb-0">From</label><input type="date" name="positions[' + positionIndex + '][from_date]" class="form-control form-control-sm"></div>' +
-        '<div class="col-md-3"><label class="form-label small mb-0">To</label><input type="date" name="positions[' + positionIndex + '][to_date]" class="form-control form-control-sm"></div>' +
-        '<div class="col-12"><button type="button" class="btn btn-sm btn-outline-danger remove-position">Remove position</button></div></div></div>';
-    document.getElementById('positionsContainer').insertAdjacentHTML('beforeend', html);
-    positionIndex++;
-});
-document.getElementById('positionsContainer').addEventListener('click', function(e) {
-    if (e.target.classList.contains('remove-position')) {
-        var row = e.target.closest('.position-row');
-        if (document.querySelectorAll('.position-row').length > 1) row.remove();
     }
 });
 </script>
