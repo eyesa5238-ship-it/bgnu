@@ -3,6 +3,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ResearchController;
 
 Route::get('/banner', function () {
     return view('banner');
@@ -49,4 +50,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/education/{id}/edit', [Controller::class, 'edit'])->name('education.edit');
     Route::put('/education/{id}', [Controller::class, 'update'])->name('education.update');
     Route::delete('/education/{id}', [Controller::class, 'destroy'])->name('education.destroy');
+    Route::get('/research',[ResearchController::class,'index'])->name('research.index');
+    Route::post('/research/store',[ResearchController::class,'store'])->name('research.store');
+    Route::post('/research/add',[ResearchController::class,'add'])->name('research.add');
 });

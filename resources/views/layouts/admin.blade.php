@@ -149,6 +149,10 @@
                     <i class="fa-solid fa-briefcase"></i>
                     Academic Positions
                 </a>
+                <a href="{{ route('research.index') }}" class="admin-nav-item {{ request()->routeIs('research') ? 'active' : '' }}">
+                    <i class="fa-solid fa-briefcase"></i>
+                    Research
+                </a>
                 <div class="admin-nav-divider"></div>
                 <a href="{{ url('/') }}" class="admin-nav-item" target="_blank">
                     <i class="fa-solid fa-external-link-alt"></i>
