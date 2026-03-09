@@ -51,6 +51,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/education/{id}', [Controller::class, 'update'])->name('education.update');
     Route::delete('/education/{id}', [Controller::class, 'destroy'])->name('education.destroy');
     Route::get('/research',[ResearchController::class,'index'])->name('research.index');
-    Route::post('/research/store',[ResearchController::class,'store'])->name('research.store');
+    Route::get('/research/store',[ResearchController::class,'store'])->name('research.store');
     Route::post('/research/add',[ResearchController::class,'add'])->name('research.add');
 });

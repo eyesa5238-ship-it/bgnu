@@ -25,7 +25,7 @@ class ResearchController extends Controller
         'url' => $request->url,
         'date_of_publication' => $request->date_of_publication,
         'description' => $request->description,
-        'user_id' => auth()->id,
+        'user_id' => auth()->id(),
         'country' => $request->country,
         ]);
         return redirect()->back()->with('success', 'Form submitted successfully!');

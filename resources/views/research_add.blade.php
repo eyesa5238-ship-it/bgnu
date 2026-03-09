@@ -20,13 +20,12 @@
         <div class="admin-card-body">
             <form action="{{ route('research.add') }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Title</label>
                         <input type="text" name="title" class="form-control" required>
-                    </div
-                    div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">URL</label>
                         <input type="text" name="url" class="form-control"  required>
                     </div>
