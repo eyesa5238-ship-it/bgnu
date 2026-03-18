@@ -9,6 +9,10 @@ Route::get('/banner', function () {
     return view('banner');
 });
 
+// test route
+Route::get('/test', function () {
+    return view('test');
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
