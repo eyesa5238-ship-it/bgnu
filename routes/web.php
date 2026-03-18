@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResearchController;
+use App\Http\Controllers\AwardController;
 
 Route::get('/banner', function () {
     return view('banner');
@@ -57,4 +58,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/research',[ResearchController::class,'index'])->name('research.index');
     Route::get('/research/store',[ResearchController::class,'store'])->name('research.store');
     Route::post('/research/add',[ResearchController::class,'add'])->name('research.add');
+
+    Route::get('/awards', [AwardController::class, 'index'])->name('awards.index');
+    Route::get('/awards/create', [AwardController::class, 'create'])->name('awards.create');
+    Route::post('/awards', [AwardController::class, 'store'])->name('awards.store');
 });

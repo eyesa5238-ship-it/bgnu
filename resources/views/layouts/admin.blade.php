@@ -149,9 +149,13 @@
                     <i class="fa-solid fa-briefcase"></i>
                     Academic Positions
                 </a>
-                <a href="{{ route('research.index') }}" class="admin-nav-item {{ request()->routeIs('research') ? 'active' : '' }}">
-                    <i class="fa-solid fa-briefcase"></i>
+                <a href="{{ route('research.index') }}" class="admin-nav-item {{ request()->routeIs('research.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-flask"></i>
                     Research
+                </a>
+                <a href="{{ route('awards.index') }}" class="admin-nav-item {{ request()->routeIs('awards.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-trophy"></i>
+                    Awards & Honors
                 </a>
                 <div class="admin-nav-divider"></div>
                 <a href="{{ url('/') }}" class="admin-nav-item" target="_blank">
