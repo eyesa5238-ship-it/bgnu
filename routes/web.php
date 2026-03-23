@@ -4,7 +4,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResearchController;
-
+use App\Http\Controllers\StaffProfileController;
+use App\Http\Controllers\AwardsAndHonorsController;
 Route::get('/banner', function () {
     return view('banner');
 });
@@ -18,6 +19,9 @@ Route::get('/banner', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Public staff profile page
+Route::get('/staff/{user}', [StaffProfileController::class, 'show'])->name('staff.show');
 
 // Auth routes ( when not logged in)
 Route::middleware('guest')->group(function () {
@@ -53,4 +57,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/research',[ResearchController::class,'index'])->name('research.index');
     Route::get('/research/store',[ResearchController::class,'store'])->name('research.store');
     Route::post('/research/add',[ResearchController::class,'add'])->name('research.add');
+    Route::get('/admin/awards-honors', [AwardsAndHonorsController::class, 'index'])->name('awards.honors.index');
+    Route::post('/admin/awards-honors/store', [AwardsAndHonorsController::class, 'store'])->name('awards.honors.store');
+    Route::put('/admin/awards-honors/update/{id}', [AwardsAndHonorsController::class, 'update'])->name('awards.honors.update');
+    Route::delete('/admin/awards-honors/delete/{id}', [AwardsAndHonorsController::class, 'destroy'])->name('awards.honors.delete');
 });

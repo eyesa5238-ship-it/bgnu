@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(AcademicPosition::class);
     }
 
+    public function researches()
+    {
+        return $this->hasMany(Research::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->type !== null && strtolower((string) $this->type) === self::ROLE_ADMIN;
